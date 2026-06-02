@@ -1,0 +1,321 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>630 财富建筑师战术蓝图</title>
+  <style>
+    :root {
+      --navy:#071b35; --blue:#12365f; --cyan:#20d6e5; --gold:#c8a35c;
+      --red:#b51f2d; --paper:#f5f8fb; --ink:#10213a; --muted:#5e6b7c;
+      --line:rgba(18,54,95,.18); --pad:clamp(22px,4vw,58px);
+      --h1:clamp(38px,6vw,78px); --h2:clamp(30px,4.6vw,56px);
+      --h3:clamp(18px,2.3vw,30px); --body:clamp(15px,1.55vw,21px);
+      --small:clamp(11px,1.05vw,15px);
+    }
+    *{box-sizing:border-box} html,body{margin:0;height:100%;background:#07111f;overflow:hidden}
+    body{font-family:"Microsoft YaHei UI","Noto Sans SC","PingFang SC",sans-serif;color:var(--ink);letter-spacing:0}
+    .deck{height:100vh;height:100dvh;overflow:hidden}
+    .slide{position:absolute;inset:0;height:100vh;height:100dvh;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;gap:clamp(12px,2vh,22px);padding:var(--pad);background:linear-gradient(120deg,rgba(32,214,229,.08),transparent 34%),radial-gradient(circle at 92% 8%,rgba(200,163,92,.18),transparent 28%),linear-gradient(180deg,#fbfdff,var(--paper));opacity:0;transform:translateX(2.5%);pointer-events:none;transition:opacity .28s ease,transform .28s ease}
+    .slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
+    .slide.dark{color:#fff;background:radial-gradient(circle at 50% 20%,rgba(32,214,229,.22),transparent 36%),linear-gradient(135deg,#071426,#09213f 54%,#050b15)}
+    .slide::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(18,54,95,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(18,54,95,.08) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(180deg,rgba(0,0,0,.65),transparent 88%)}
+    .slide.dark::before{background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px)}
+    header,main,footer{position:relative;z-index:1} header{display:grid;gap:clamp(6px,1vh,12px)}
+    .kicker{display:inline-flex;align-items:center;gap:.55em;color:var(--blue);font-size:var(--small);font-weight:900;text-transform:uppercase;width:fit-content}
+    .dark .kicker{color:var(--cyan)} .kicker::before{content:"";width:.8em;height:.8em;border-radius:50%;background:currentColor;box-shadow:0 0 18px currentColor}
+    h1,h2,h3,p{margin:0} h1{font-size:var(--h1);line-height:1.05;max-width:17ch} h2{font-size:var(--h2);line-height:1.08;max-width:23ch;color:inherit} h3{font-size:var(--h3);line-height:1.18}
+    .lead{font-size:clamp(19px,2.3vw,31px);line-height:1.42;max-width:42ch;color:inherit}.body{font-size:var(--body);line-height:1.5;color:inherit}.small{font-size:var(--small);color:var(--muted);line-height:1.45}.dark .small,.dark .muted{color:rgba(255,255,255,.72)}
+    .gold{color:var(--gold)}.cyan{color:var(--cyan)}.red{color:var(--red)}
+    main{min-height:0;display:grid;align-items:center} footer{border-top:1px solid rgba(18,54,95,.16);padding-top:clamp(8px,1.4vh,14px);display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:var(--small)}.dark footer{border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.72)}.tag{color:var(--gold);font-weight:900}
+    .hero,.split{grid-template-columns:minmax(0,.95fr) minmax(360px,1.05fr);gap:clamp(18px,3vw,42px)}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2.1vw,26px)}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(13px,1.9vw,24px)}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.7vw,20px)}.stack{display:grid;gap:clamp(12px,2vh,22px)}
+    .card{border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.84);padding:clamp(14px,2vw,25px);box-shadow:0 16px 40px rgba(7,27,53,.09)}.dark .card{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);box-shadow:0 16px 48px rgba(0,0,0,.22)}.card.accent{border-top:5px solid var(--gold)}
+    .metric{font-size:clamp(32px,5.4vw,70px);line-height:1;color:var(--gold);font-weight:950}.metric.red{color:var(--red)}.metric.cyan{color:var(--cyan)}.metric-label{margin-top:.45em;font-size:var(--body);line-height:1.35}
+    ul{margin:0;padding-left:1.05em}li{font-size:var(--body);line-height:1.42;margin:.38em 0}
+    .image-panel{height:min(58vh,520px);border-radius:8px;overflow:hidden;border:1px solid rgba(18,54,95,.22);box-shadow:0 20px 60px rgba(7,27,53,.18);background:#eef4f9}.image-panel.tall{height:min(64vh,590px)}.image-panel img{width:100%;height:100%;object-fit:contain;display:block}.image-panel.cover img{object-fit:cover}.dark .image-panel{border-color:rgba(255,255,255,.24);box-shadow:0 20px 70px rgba(0,0,0,.36);background:rgba(255,255,255,.05)}.video-panel{height:min(58vh,520px);border-radius:8px;overflow:hidden;border:1px solid rgba(18,54,95,.22);box-shadow:0 20px 60px rgba(7,27,53,.18);background:#000}.video-panel video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
+    .quote{font-size:clamp(30px,5vw,66px);line-height:1.16;font-weight:950;max-width:18ch}.pill{display:inline-flex;width:fit-content;border-radius:999px;padding:.42em .8em;border:1px solid rgba(32,214,229,.34);color:var(--cyan);font-size:var(--small);font-weight:900;background:rgba(32,214,229,.08)}
+    .title-slide .hero{grid-template-columns:minmax(0,.78fr) minmax(420px,.82fr);align-items:center}.title-slide h1{font-size:clamp(44px,5.2vw,70px);max-width:11.5ch}.title-slide .lead{max-width:30ch}.title-slide .image-panel.tall{height:min(46vh,420px);align-self:center}.title-slide .grid-3{grid-template-columns:repeat(3,minmax(0,1fr));max-width:720px}.title-slide .metric{font-size:clamp(34px,4.7vw,62px)}.title-slide .card{min-height:170px}
+    .compare{width:100%;border-collapse:collapse;overflow:hidden;border-radius:8px;font-size:clamp(13px,1.35vw,19px);box-shadow:0 16px 40px rgba(7,27,53,.09)}.compare.dense{font-size:clamp(11px,1.06vw,16px)}.compare th{text-align:left;padding:.72em .8em;background:var(--navy);color:#fff}.compare.dense th{padding:.62em .58em}.compare td{padding:.68em .8em;background:rgba(255,255,255,.86);border-bottom:1px solid var(--line);vertical-align:top}.compare.dense td{padding:.58em .58em}.compare td:first-child{font-weight:900;color:var(--blue);width:18%}.compare.dense td:first-child{width:10%}.compare tr:last-child td{border-bottom:0}
+    .controls{position:fixed;left:50%;bottom:14px;z-index:20;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px 12px;color:#fff;background:rgba(7,17,31,.72);border-radius:999px;font-size:13px;backdrop-filter:blur(10px)}.controls button{width:32px;height:28px;border:0;border-radius:999px;color:#fff;background:rgba(255,255,255,.15);cursor:pointer;font-weight:900}.progress{position:fixed;left:0;bottom:0;height:5px;width:0;z-index:30;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width .2s ease}
+    @media(max-width:920px){.hero,.split,.grid-2,.grid-3,.grid-4,.title-slide .hero,.title-slide .grid-3{grid-template-columns:1fr}.image-panel,.image-panel.tall,.video-panel,.title-slide .image-panel.tall{height:min(38vh,330px)}.title-slide h1{max-width:12ch}}@media(max-height:700px){:root{--pad:clamp(16px,3vw,34px);--body:clamp(13px,1.25vw,18px)}.image-panel,.image-panel.tall,.video-panel{height:min(48vh,370px)}.title-slide .image-panel.tall{height:min(38vh,330px)}li{margin:.24em 0}}@media(max-height:560px){footer{display:none}.image-panel,.image-panel.tall,.video-panel{height:34vh}.title-slide .image-panel.tall{height:30vh}}@media(prefers-reduced-motion:reduce){.slide,.progress{transition:none}}
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <section class="slide dark title-slide active">
+      <header><span class="kicker">Confidential · 团队内部</span></header>
+      <main class="hero">
+        <div class="stack">
+          <h1>630 决胜兵法：财富建筑师的战术蓝图</h1>
+          <p class="lead">按产品部分享顺序，讲清低利率时代的资产防御、产品窗口与六月行动。</p>
+          <div class="grid-3">
+            <div class="card"><div class="metric cyan">1.93万亿</div><p class="metric-label">一季度人身险保费</p></div>
+            <div class="card"><div class="metric">0.28%</div><p class="metric-label">长期差异起点</p></div>
+            <div class="card"><div class="metric red">6.30</div><p class="metric-label">产品窗口关闭</p></div>
+          </div>
+        </div>
+        <div class="image-panel cover tall"><img src="630-product-training-assets/after-630.jpg" alt="630之后这套房产少赚15%"></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 01 · 趋势</span><h2>顺势而为：资金正在迁徙到长期确定性</h2></header>
+      <main class="grid-3">
+        <div class="card accent"><div class="metric cyan">1.93万亿</div><p class="metric-label">2026年一季度人身险保费，其中寿险约1.50万亿，同比增幅8.7%。</p></div>
+        <div class="card"><div class="metric">3.68万亿</div><p class="metric-label">前3个月居民存款净流出，一季度到期存款约32-34万亿，资金正在重新寻找去处。</p></div>
+        <div class="card"><h3>我们的机会</h3><p class="body">公募基金小幅缩水，股票保证金新增约0.45万亿但观望情绪仍在。客户不是没有钱，而是更谨慎，更需要长期、安全、有规则的资产容器。</p></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 02 · 630大考</span><h2>每差一天，时代底座的红利就少一分</h2></header>
+      <main class="split">
+        <div class="stack">
+          <div class="card"><span class="pill">630 前</span><h3>1.75% + [(3.9% - 1.75%) × 0.7] = 3.255%</h3><p class="body">现有版本下，客户看到的是当前较强的长期演示逻辑。</p></div>
+          <div class="card"><span class="pill">630 后</span><h3>1.75% + [(3.5% - 1.75%) × 0.7] = 2.975%</h3><p class="body">看似只差0.28%，但几十年复利、领取、传承都会被放大。</p></div>
+          <div class="card accent"><h3>105岁约84.9%</h3><p class="body">差异不是最后一年才出现，而是从第一年开始逐年累积。</p></div>
+        </div>
+        <div class="image-panel"><img src="630-product-training-assets/rate-adjustment.jpg" alt="0.28%意味着什么"></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 03 · 竞品底牌</span><h2>分红率的“数字游戏”：看懂 3.2 的底层逻辑</h2></header>
+      <main class="grid-3">
+        <div class="card"><h3>3.2%演示公式</h3><p class="body">1.75% + (3.2% - 1.75%) × 70% = 2.765%。基准越低，未来分红实现率在账面上越容易显得更高。</p></div>
+        <div class="card"><h3>比例会被时间放大</h3><p class="body">同一案例下，3.2%演示到30年约为原3.9%演示的89.0%，50年约83.4%，105年约74.6%。</p></div>
+        <div class="card accent"><h3>客户真正要比较什么？</h3><p class="body">不是只看实现率好不好看，而是看合同、现金价值、领取和传承的长期结果。630前，要用计划书把差距算清楚。</p></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 04 · 复利大决战</span><h2>剥去附加值，同样2000万大单，AIA多出的是一套房</h2></header>
+      <main class="split">
+        <div class="stack">
+          <div class="card accent"><h3>对比口径</h3><p class="body">公司完整版口径：假设总保费2000万，333万×6年交。把竞品汇赢宝与AIA传世盈佳荣耀版对比，看的不是活动和附加服务，而是合同里的长期现金价值。</p></div>
+          <div class="grid-3">
+            <div class="card"><h3>第10年</h3><p class="body">B-A约107.63万，约等于1KG金条。</p></div>
+            <div class="card"><h3>第30年</h3><p class="body">B-A约329.82万，约等于3KG金条。</p></div>
+            <div class="card"><h3>第50年</h3><p class="body">B-A约901.70万，约等于一套中内环100平房产。</p></div>
+          </div>
+        </div>
+        <div class="image-panel"><img src="630-product-training-assets/notelm/notelm-5.png" alt="金条三根金条与房产"></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 05 · 康养降维</span><h2>重资产锁定未来，轻资产保留选择权</h2></header>
+      <main class="split">
+        <div class="stack">
+          <div class="card"><h3>客户不是马上老</h3><p class="body">60岁客户现在看养老院，真正入住可能是10年、15年以后。</p></div>
+          <div class="card"><h3>重资产的风险</h3><p class="body">今天锁定一项养老资源，未来环境、服务、需求都可能变化，客户容易被深度绑定。</p></div>
+          <div class="card accent"><h3>AIA轻资产机制</h3><p class="body">合适就留，不合适就换。客户保留筛选权，服务也更灵活。</p></div>
+        </div>
+        <div class="image-panel"><img src="630-product-training-assets/notelm/notelm-6.png" alt="轻资产康养机制"></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 06 · 热点一</span><h2>信托与P2P的良性清退陷阱</h2></header>
+      <main class="grid-3">
+        <div class="card"><h3>危险诱惑</h3><p class="body">100万本金，承诺8%年化，一次性先给80万利息，听起来很美。</p></div>
+        <div class="card"><h3>残酷真相</h3><p class="body">所谓良性清退，可能只承认剩余20万本金，还要无限期分期。</p></div>
+        <div class="card accent"><h3>保单价值</h3><p class="body">跨过回本期后，传世赢家开始产生纯收益。不要用本金安全去赌虚妄高息。</p></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 07 · 热点二</span><h2>港险反击战：第11年之后，确定性开始反超</h2></header>
+      <main class="split">
+        <div class="stack">
+          <div class="card"><h3>客户为什么会动心</h3><p class="body">港险常用“更高演示、更国际化、服务包装”吸引客户，6月也可能集中抢夺客户注意力。</p></div>
+          <div class="card accent"><h3>第11年交叉点</h3><p class="body">对比部分港险/海外方案，第11年AIA实现收益开始反超；第11年至第30年，内地保单收益曲线一路向上，不再回头。</p></div>
+          <div class="card"><h3>我们的底牌</h3><p class="body">不用只盯演示数字。资金在境内、合同确定、服务可触达、长期曲线反超，才是客户真正应该比较的核心。</p></div>
+        </div>
+        <div class="image-panel"><img src="630-product-training-assets/notelm/notelm-8.png" alt="港险第11年交叉点"></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 08 · 热点三</span><h2>存款、黄金、短理财：都会遇到“到期再选择”的盲盒</h2></header>
+      <main class="grid-3">
+        <div class="card"><h3>存款</h3><p class="body">这次到期还能续多少？下一次到期又是多少？客户无法提前锁定未来利率。</p></div>
+        <div class="card"><h3>黄金</h3><p class="body">适合作为配置，但价格波动强，不能承诺未来每年稳定现金流。</p></div>
+        <div class="card accent"><h3>短理财</h3><p class="body">产品到期后要重新买，未来收益和风险都变成盲盒。保险的意义，是让家庭里有一部分钱不用反复选择，直接写进长期合同。</p></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 09 · 利率演示</span><h2>无风险利率持续下行：短期资产到期后更难选择</h2></header>
+      <main class="split">
+        <div class="stack">
+          <div class="card accent"><h3>利率不是静止的</h3><p class="body">银行理财平均收益率从2023年的2.94%，到2024年的2.65%，再到2025年的1.98%，客户每一次到期都要重新面对更低利率。</p></div>
+          <div class="card"><h3>客户真正的焦虑</h3><p class="body">不是今天有没有收益，而是未来10年、20年以后，还能不能找到同样确定的收益和现金流。</p></div>
+          <div class="card"><h3>保险的价值</h3><p class="body">把一部分长期现金流写进合同，让家庭资产里至少有一块不用每几年重新选择。</p></div>
+        </div>
+        <div class="video-panel"><video controls preload="metadata" src="630-product-training-assets/company/interest-rate-demo.mp4"></video></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 10 · 时代定调</span><h2>保单 VS 房产：优质资产的终极对决</h2></header>
+      <main class="split">
+        <div class="stack">
+          <div class="card"><h3>优质资产的两个标准</h3><p class="body">能带来正向现金流，并且大概率增值。</p></div>
+          <div class="card"><h3>房产神话已经变化</h3><p class="body">上海存量房产约960万套，挂牌约20万套；租售比约1.5%，持有成本、维护成本、变现周期和传承成本都在上升。</p></div>
+          <div class="card accent"><h3>金融房产的价值</h3><p class="body">保底+浮动、合同现金价值、部分退保、定向传承，构成新的资产底座。</p></div>
+        </div>
+        <div class="image-panel"><img src="630-product-training-assets/real-vs-financial.jpg" alt="实体房产vs金融房产"></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 11 · 房产租金对比</span><h2>同样510万：房子收租，还是保单收“金融租金”？</h2></header>
+      <main>
+        <table class="compare dense">
+          <tr><th>比较逻辑</th><th>实体房产</th><th>传世盈佳/金融房产</th><th>客户看到的差异</th></tr>
+          <tr><td>初始本金</td><td>510万买入一套房</td><td>85万×6年=510万总保费</td><td>同样用510万做长期现金流资产</td></tr>
+          <tr><td>租金假设</td><td>按上海2026年整体平均净租回报率约1.5%估算，年净租金约7.65万</td><td>47岁起每年部分退保14.4万，约等于每月1.2万“金融租金”</td><td>金融房产的年度现金流高于实体房租</td></tr>
+          <tr><td>持有过程</td><td>有物业、维修、空置、找租客和催租成本</td><td>无需装修、无需维护、无需管理租客</td><td>现金流更省心，管理成本更低</td></tr>
+          <tr><td>资产余额</td><td>房价按510万不涨计算，累计房租慢慢增加</td><td>一边领取，一边账户余额继续增长</td><td>领取后账户仍有余额，领取+余额远超本金</td></tr>
+          <tr><td>流动性</td><td>不能只卖厨房或卧室；2026年4月上海存量房平均交易周期约22.4个月</td><td>可按规则部分退保，精准提取所需额度</td><td>需要多少钱取多少，不必卖掉整套资产</td></tr>
+        </table>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 12 · 方案A</span><h2>终身领取：从47岁开始的稳定现金流</h2></header>
+      <main class="split">
+        <div class="stack">
+          <div class="card accent"><h3>案例设定</h3><p class="body">37岁女性，年交85万，6年总投入510万；基本保额424.1万，第10年即47岁起每年部分退保14.4万。</p></div>
+          <div class="card"><h3>核心发现</h3><p class="body">85岁累计领取561万+，账户余额约920万，实现边收“金融租金”、边保留资产余额。</p></div>
+          <div class="card"><h3>适配客户</h3><p class="body">准退休、现金流焦虑、希望提前锁定未来生活费的家庭。</p></div>
+        </div>
+        <div class="image-panel"><img src="630-product-training-assets/plan-a-cashflow.jpg" alt="方案A终身领取"></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 13 · 方案A数据</span><h2>把现金流讲成客户能看到的人生阶段</h2></header>
+      <main>
+        <table class="compare dense">
+          <tr><th>年龄</th><th>金融房产：累计领取</th><th>金融房产：账户余额</th><th>金融房产：总价值</th><th>实体房产：累计房租</th><th>实体房产：房价</th><th>实体房产：总价值</th></tr>
+          <tr><td>60岁</td><td>201万</td><td>658万</td><td>859万</td><td>184万</td><td>510万</td><td>694万</td></tr>
+          <tr><td>70岁</td><td>345万</td><td>739万</td><td>1,084万</td><td>260万</td><td>510万</td><td>770万</td></tr>
+          <tr><td>80岁</td><td>489万</td><td>850万</td><td>1,339万</td><td>337万</td><td>510万</td><td>847万</td></tr>
+          <tr><td>90岁</td><td>633万</td><td>1,000万</td><td>1,633万</td><td>413万</td><td>510万</td><td>923万</td></tr>
+          <tr><td>100岁</td><td>763万</td><td>1,210万</td><td>1,973万</td><td>490万</td><td>510万</td><td>999万</td></tr>
+        </table>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 14 · 方案B</span><h2>不领取：让账户变成滚动的财富雪球</h2></header>
+      <main class="split">
+        <div class="stack">
+          <div class="card"><h3>核心逻辑</h3><p class="body">中途不领取，让现金价值与分红在账户里长期滚动，后期形成更大的资产池。</p></div>
+          <div class="card"><h3>适配客户</h3><p class="body">当前现金流充足，希望给子女或家族留下确定资产的高净值客户。</p></div>
+          <div class="card accent"><h3>104岁示例</h3><p class="body">不领取方案中，104岁金融房产示例为3,745万，形成“七套房”的传承画面。</p></div>
+        </div>
+        <div class="image-panel"><img src="630-product-training-assets/plan-b-snowball.jpg" alt="方案B不领取财富雪球"></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 15 · 传承壁垒</span><h2>从一套房到七套房的无损跨越</h2></header>
+      <main class="grid-3">
+        <div class="card"><h3>房产传承有税损</h3><p class="body">继承、出售、过户可能面临税费、手续和家庭协商成本。</p></div>
+        <div class="card"><h3>保单传承更精准</h3><p class="body">生前指定、身后直达。保险传承无需公证、无需过户、无需分割，一张保单锁定家族财富流向。</p></div>
+        <div class="card accent"><h3>财富裂变</h3><p class="body">长期账户价值裂变，让保单从一套房价值，走向多套房级别的传承资产。</p></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 16 · 纵深联防</span><h2>传世金生：未来医疗险续费的发动机</h2></header>
+      <main class="grid-3">
+        <div class="card"><h3>客户真正的缺口</h3><p class="body">保障买得好，不代表退休后保费付得起。60岁到95岁，基础医疗累计保费约34.2万，品质医疗累计保费约84.6万。</p></div>
+        <div class="card accent"><h3>30万基础版</h3><p class="body">35岁准备30万，5万×6年。60岁后用传世金生衔接医疗险续费到95岁，付完后仍剩约122.6万，其中年金险现价29.5万、万能账户约93.1万。</p></div>
+        <div class="card"><h3>50万品质版</h3><p class="body">35岁准备50万，5万×10年。覆盖更高品质医疗责任后，95岁仍剩约106万，其中年金险现价48.8万、万能账户约57.2万。</p></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 17 · 销售锚点</span><h2>6月不只讲停售，还要讲服务门槛的变化</h2></header>
+      <main class="grid-4">
+        <div class="card accent"><h3>财富服务</h3><p class="body">150万及以下财富服务门槛，老客户8折优惠取消。</p></div>
+        <div class="card"><h3>御享家</h3><p class="body">总保费100万，从“至少10年”调整为“缴费期”；总保费200万，从“至少10年”调整为“缴费期×2”。</p></div>
+        <div class="card"><h3>康养管家</h3><p class="body">尊享版服务门槛调整至300万，更适合提前锁定康养需求的客户。</p></div>
+        <div class="card"><h3>保险金信托</h3><p class="body">信托3.0服务门槛调整至300万，传承需求客户要提前盘点。</p></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 18 · 六月执行</span><h2>从今天开始，团队统一进入630作战节奏</h2></header>
+      <main class="grid-4">
+        <div class="card"><div class="metric cyan">20</div><p class="metric-label">每人筛20位重点客户：存款到期、房产、港险意向、医疗费缺口、传承需求。</p></div>
+        <div class="card"><div class="metric">10</div><p class="metric-label">每人完成10场资产盘点，先问资产现状，再讲产品窗口。</p></div>
+        <div class="card"><div class="metric red">5</div><p class="metric-label">每人至少5套正式计划书：领取版、不领取版、房产对比版、医疗保费资金池版。</p></div>
+        <div class="card"><div class="metric">2</div><p class="metric-label">每人锁定2个家庭重点推进，主管陪访，晚上复盘异议。</p></div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide">
+      <header><span class="kicker">Step 19 · 客户开场</span><h2>一句话把停售讲得专业、不焦虑</h2></header>
+      <main class="stack">
+        <div class="card accent"><p class="lead">“这次我不是单纯跟您说某个产品要停售，而是想帮您看一下：利率下行以后，您手上的存款、房产、海外资产和未来养老现金流，哪一块最需要先锁定。”</p></div>
+        <div class="grid-3">
+          <div class="card"><h3>第一问</h3><p class="body">您最近有没有存款、理财或保险到期，需要重新安排？</p></div>
+          <div class="card"><h3>第二问</h3><p class="body">如果未来利率继续下行，您更担心收益下降，还是担心未来用钱不确定？</p></div>
+          <div class="card"><h3>第三问</h3><p class="body">我给您做两套方案：一套未来领取，一套不领取滚动，您先看差异再决定。</p></div>
+        </div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+
+    <section class="slide dark">
+      <header><span class="kicker">Final · 决胜</span><h2>630不是停售提醒，是资产建筑师的决胜战</h2></header>
+      <main class="grid-2">
+        <div class="stack">
+          <p class="quote">客户买的不是一张保单，而是一套跨越周期的财富建筑方案。</p>
+          <p class="lead">我们要把趋势讲清，把差异算清，把方案摆清，把行动推进到底。</p>
+        </div>
+        <div class="card">
+          <h3>6月统一主张</h3>
+          <ul><li>顺势而为，抓住资金迁徙</li><li>锁定630前产品窗口</li><li>用计划书证明长期价值</li><li>用专业守住客户财富底线</li></ul>
+        </div>
+      </main>
+      <footer><span></span><span class="tag"></span></footer>
+    </section>
+  </div>
+
+  <div class="controls"><button id="prev" aria-label="上一页">‹</button><span id="page">1 / 19</span><button id="next" aria-label="下一页">›</button><span>方向键 / 空格翻页</span></div>
+  <div class="progress" id="progress"></div>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')],page=document.getElementById('page'),progress=document.getElementById('progress');let index=0;
+    function show(i){index=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,n)=>s.classList.toggle('active',n===index));page.textContent=`${index+1} / ${slides.length}`;progress.style.width=`${((index+1)/slides.length)*100}%`;location.hash=`slide-${index+1}`}
+    function go(d){show(index+d)} document.getElementById('prev').addEventListener('click',()=>go(-1));document.getElementById('next').addEventListener('click',()=>go(1));
+    document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(1)} if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(-1)} if(e.key==='Home')show(0); if(e.key==='End')show(slides.length-1)});
+    const match=location.hash.match(/slide-(\d+)/);show(match?Number(match[1])-1:0);
+  </script>
+</body>
+</html>
+
